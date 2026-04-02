@@ -45,7 +45,6 @@ class CadProdutoPage extends HTMLElement {
             () => windows.history.back());
       
     }
-
     
 }
 
