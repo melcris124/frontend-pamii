@@ -1,3 +1,4 @@
-#### Projeto 1 - PAM II
+### Projeto 1 - PAMN II
 
-Projeto desenvolvido nas aulas de PAM II - Etec Pedro Ferreira Alves
+Integrantes:
+*Mel Cristina
