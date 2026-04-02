@@ -14,53 +14,34 @@ class ListProdutoPage extends HTMLElement {
                 <div class="list-produto"></div>
             </ion-content>
         `;
-        this.querySelector('#logout-btn')
-        .addEventListener('click', logout);
-
-        // buscando os produtos
-        const produtos = this.fetchProdutos() || [];
         
-        // renderizando os produtos no HTML
+        // Correção do Logout
+        const logoutBtn = this.querySelector('#logout-btn');
+        if(logoutBtn) logoutBtn.addEventListener('click', logout);
+
+        const produtos = this.fetchProdutos() || [];
         this.renderProdutos(produtos);
     }
 
     fetchProdutos() {
         return [
-            {
-                "id": 1,
-                "dsc_produto": "Macarronada",
-                "valor_unit": 20.99,
-                "status": 1
-            },
-            {
-                "id": 2,
-                "dsc_produto": "Feijoada",
-                "valor_unit": 30.99,
-                "status": 0
-            },
-            {
-                "id": 3,
-                "dsc_produto": "Strogonoff de Frango",
-                "valor_unit": 25.99,
-                "status": 1
-            }
-        ]
+            { "id": 1, "dsc_produto": "Macarronada", "valor_unit": 20.99, "status": 1 },
+            { "id": 2, "dsc_produto": "Feijoada", "valor_unit": 30.99, "status": 0 },
+            { "id": 3, "dsc_produto": "Strogonoff de Frango", "valor_unit": 25.99, "status": 1 }
+        ];
     }
 
     renderProdutos(produtos) {
         const container = this.querySelector(".list-produto");
 
-        // SE PRODUTO VAZIO, MOSTRAR MENSAGEM AO USUÁRIO
         if (produtos.length === 0) {
-            container.innerHTML = '<p> Nenhum produto encontrado </p>'
+            container.innerHTML = '<p class="ion-padding"> Nenhum produto encontrado </p>';
             return;
         }
 
-        // FORMATANDO VALORES EM REAIS
         const formatMoeda = (value) => {
             return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
-        
         
         const produtoItems = produtos.map(produto => `
             <ion-item>
@@ -69,7 +50,6 @@ class ListProdutoPage extends HTMLElement {
                         <ion-icon
                             name="${produto.status ? 'checkmark-circle' : 'close-circle'}"
                             color="${produto.status ? 'success' : 'danger'}"
-                            style="flex-shrink: 0;"
                         ></ion-icon>
                         <span>${produto.dsc_produto}</span>
                     </h2>
@@ -87,8 +67,24 @@ class ListProdutoPage extends HTMLElement {
             </ion-item>`).join('');
     
         container.innerHTML = `<ion-list>${produtoItems}</ion-list>`;
-    }
 
+        // --- ADICIONANDO EVENTOS AOS BOTÕES GERADOS ---
+        this.querySelectorAll('.btn-edit').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                console.log('Editar produto:', id);
+                // Aqui você faria o redirecionamento:
+                // window.location.hash = `#/edit-produto/${id}`; 
+            });
+        });
+
+        this.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                alert('Excluir produto ID: ' + id);
+            });
+        });
+    }
 }
 
 customElements.define('list-produto-page', ListProdutoPage);
